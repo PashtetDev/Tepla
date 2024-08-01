@@ -47,7 +47,7 @@ int Equipment::save()
 			+ model + '\n'
 			+ inventory_number + '\n'
 			+ serial_number + '\n'
-			+ description + '\n'
+			+ description + "&\n"
 			+ place + '\n'
 			+ status_to_string(this->status);
 		fprintf(file, data.c_str());

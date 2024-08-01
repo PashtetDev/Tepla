@@ -34,13 +34,14 @@ void ListEquipment::print()
 		e.print_table();
 		cout << "\n";
 	}
-	for (int i = 0; i < 14; i++)
+	for (int i = 0; i < 18; i++)
 		cout << "_____";
 	cout << endl << endl;
 }
 
 void ListEquipment::load_data(string path)
 {
+	list_.clear();
 	for (auto& temp : std::filesystem::directory_iterator(path + "Equipment\\"))
 	{
 		if (temp.is_directory())
@@ -49,14 +50,15 @@ void ListEquipment::load_data(string path)
 			char buff[50];
 			ifstream fin((temp.path().string() + "\\config").c_str());
 
-			fin >> name;
-			fin >> full_name;
-			fin >> model;
-			fin >> inv_number;
-			fin >> serial_number;
-			fin >> description;
-			fin >> place;
-			fin >> status;
+			getline(fin, name);
+			getline(fin, full_name);
+			getline(fin, model);
+			getline(fin, inv_number);
+			getline(fin, serial_number);
+			getline(fin, description, '&');
+			getline(fin, place);
+			getline(fin, place);
+			getline(fin, status);
 
 			fin.close();
 
@@ -116,7 +118,9 @@ void ListEquipment::add_equipment(string gloabal_path)
 {
 	string name, full_name, model, inv_number, serial_number, description, place, path;
 
-	getline(cin, name);
+	string str1;
+	getline(cin, str1);
+
 	cout << "Название: ";
 	getline(cin, name);
 	cout << "Полное название: ";
@@ -127,8 +131,9 @@ void ListEquipment::add_equipment(string gloabal_path)
 	getline(cin, inv_number);
 	cout << "Серийный номер: ";
 	getline(cin, serial_number);
-	cout << "Описание (поддерживается переход на новую строку, в завершении ввести символ \'-\'): ";
-	getline(cin, description, '-');
+	cout << "Дополнительная информация (поддерживается переход на новую строку, считывается ввод до символа \'&\'): ";
+	getline(cin, description, '&');
+	getline(cin, place);
 	cout << "Площадка: ";
 	getline(cin, place);
 
@@ -165,8 +170,10 @@ void ListEquipment::edit_equipment(int number, string back)
 		"9. Удалить\n";
 	printf("%s%s", menu.c_str(), back.c_str());
 
-	int operation = 0;
-	cin >> operation;
+	string in_oper;
+	cin >> in_oper;
+
+	int operation = atoi(in_oper.c_str());
 
 	string name = list_[number].name;
 	string model = list_[number].model;
@@ -180,6 +187,9 @@ void ListEquipment::edit_equipment(int number, string back)
 	auto p = list_.begin() + number;
 	list_[number].remove();
 	list_.erase(p);
+
+	string str1;
+	getline(cin, str1);
 
 	switch (operation)
 	{
@@ -206,8 +216,8 @@ void ListEquipment::edit_equipment(int number, string back)
 		getline(cin, serial_number);
 		break;
 	case 6:
-		cout << "Описание (поддерживается переход на новую строку, в завершении ввести символ \'-\'): ";
-		getline(cin, description, '-');
+		cout << "Дополнительная информация (поддерживается переход на новую строку, считывается ввод до символа \'&\'): ";
+		getline(cin, description, '&');
 		break;
 	case 7:
 		cout << "Площадка: ";

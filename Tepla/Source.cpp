@@ -17,9 +17,11 @@ class Menu
 public:
 	void print(vector<int> operations)
 	{
-		/*for (auto i : operations)
+		cout << "Отладочная информация (навигация): ";
+
+		for (auto i : operations)
 			cout << i << " ";
-		cout << endl;*/
+		cout << endl;
 
 		printf("Menu >> ");
 				
@@ -33,8 +35,16 @@ public:
 				break;
 			case 2:
 				printf("Order >> ");
-				printf("\n\n");
-				printf(order.c_str());
+				if (operations.size() > 2)
+				{
+					printf("Page not found");
+					printf("\n\n%s", back.c_str());
+				}
+				else
+				{
+					printf("\n\n");
+					printf(order.c_str());
+				}
 				break;
 			default:
 				printf("Page not found");
@@ -56,8 +66,7 @@ private:
 		"_______________\n"
 		">> ";
 	const string order =
-		"N. Выбор заявки\n"
-		"0. Добавить новую заявку\n"
+		"Этот раздел находится в разработке. Приходите позже\n"
 		"-1. Назад\n"
 		"_______________\n"
 		">> ";
@@ -78,7 +87,7 @@ int main(int argc, char* argv[])
 	LE.global_path = global_path;
 	//cout << global_path << endl;
 
-	if (create_dir("Equipment") == EXIT_SUCCESS)
+	if (create_dir(global_path+"Equipment") == EXIT_SUCCESS)
 	{
 		cout << "Папка Equipment и база данных не обнаруженны\n";
 	}
